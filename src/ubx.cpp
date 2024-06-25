@@ -107,7 +107,7 @@ GPSDriverUBX::configure(unsigned &baudrate, const GPSConfig &config)
 	if (_interface == Interface::UART) {
 
 		/* try different baudrates */
-		const unsigned baudrates[] = {38400, 57600, 9600, 115200, 230400};
+		const unsigned baudrates[] = {38400, 57600, 9600, 115200, 230400, 460800, 921600};
 
 		unsigned baud_i;
 		unsigned desired_baudrate = auto_baudrate ? UBX_BAUDRATE_M8_AND_NEWER : baudrate;
@@ -658,7 +658,7 @@ int GPSDriverUBX::configureDevice(const GNSSSystemsMask &gnssSystems)
 		}
 	}
 
-	int uart2_baudrate = 230400;
+	int uart2_baudrate = 460800;
 
 	if (_mode == UBXMode::RoverWithMovingBase) {
 		UBX_DEBUG("Configuring UART2 for rover");
