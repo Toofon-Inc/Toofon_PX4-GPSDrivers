@@ -147,7 +147,7 @@ enum class GPSRestartType {
  * data1 and data2 depend on type and user is the custom user-supplied argument.
  * @return <0 on error, >=0 on success (depending on type)
  */
-typedef int (*GPSCallbackPtr)(GPSCallbackType type, void *data1, int data2, void *user);
+typedef int (*GPSCallbackPtr)(GPSCallbackType type, void * data1, int data2, void * user);
 
 
 struct SurveyInStatus {
@@ -207,7 +207,7 @@ public:
 	};
 
 
-	GPSHelper(GPSCallbackPtr callback, void *callback_user);
+	GPSHelper(GPSCallbackPtr callback, void * callback_user);
 	virtual ~GPSHelper() = default;
 
 	/**
@@ -217,7 +217,7 @@ public:
 	 * @param config GPS Config
 	 * @return 0 on success, <0 otherwise
 	 */
-	virtual int configure(unsigned &baud, const GPSConfig &config) = 0;
+	virtual int configure(unsigned & baud, const GPSConfig & config) = 0;
 
 	/**
 	 * receive & handle new data from the device
@@ -258,7 +258,7 @@ protected:
 	 *	    < 0 for error
 	 *	    > 0 number of bytes read
 	 */
-	int read(uint8_t *buf, int buf_length, int timeout)
+	int read(uint8_t * buf, int buf_length, int timeout)
 	{
 		memcpy(buf, &timeout, sizeof(timeout));
 		return _callback(GPSCallbackType::readDeviceData, buf, buf_length, _callback_user);
@@ -270,7 +270,7 @@ protected:
 	 * @param buf_length
 	 * @return num written bytes, -1 on error
 	 */
-	int write(const void *buf, int buf_length)
+	int write(const void * buf, int buf_length)
 	{
 		return _callback(GPSCallbackType::writeDeviceData, (void *)buf, buf_length, _callback_user);
 	}
@@ -285,24 +285,24 @@ protected:
 		return _callback(GPSCallbackType::setBaudrate, nullptr, baudrate, _callback_user);
 	}
 
-	void surveyInStatus(SurveyInStatus &status)
+	void surveyInStatus(SurveyInStatus & status)
 	{
 		_callback(GPSCallbackType::surveyInStatus, &status, 0, _callback_user);
 	}
 
 	/** got an RTCM message from the device */
-	void gotRTCMMessage(uint8_t *buf, int buf_length)
+	void gotRTCMMessage(uint8_t * buf, int buf_length)
 	{
 		_callback(GPSCallbackType::gotRTCMMessage, buf, buf_length, _callback_user);
 	}
 
 	/** got a relative position message from the device */
-	void gotRelativePositionMessage(sensor_gnss_relative_s &gnss_relative)
+	void gotRelativePositionMessage(sensor_gnss_relative_s & gnss_relative)
 	{
 		_callback(GPSCallbackType::gotRelativePositionMessage, &gnss_relative, sizeof(sensor_gnss_relative_s), _callback_user);
 	}
 
-	void setClock(timespec &t)
+	void setClock(timespec & t)
 	{
 		_callback(GPSCallbackType::setClock, &t, 0, _callback_user);
 	}
@@ -317,10 +317,11 @@ protected:
 	 * @param longitude [deg]
 	 * @param altitude [m]
 	 */
-	static void ECEF2lla(double ecef_x, double ecef_y, double ecef_z, double &latitude, double &longitude, float &altitude);
+	static void ECEF2lla(double ecef_x, double ecef_y, double ecef_z, double & latitude, double & longitude,
+			     float & altitude);
 
 	GPSCallbackPtr _callback{nullptr};
-	void *_callback_user{};
+	void * _callback_user{};
 
 	uint8_t _rate_count_lat_lon{};
 	uint8_t _rate_count_vel{};

@@ -72,9 +72,9 @@
 #endif
 
 
-GPSDriverFemto::GPSDriverFemto(GPSCallbackPtr callback, void *callback_user,
-			       struct sensor_gps_s *gps_position,
-			       satellite_info_s *satellite_info,
+GPSDriverFemto::GPSDriverFemto(GPSCallbackPtr callback, void * callback_user,
+			       struct sensor_gps_s * gps_position,
+			       satellite_info_s * satellite_info,
 			       float heading_offset) :
 	GPSBaseStationSupport(callback, callback_user),
 	_gps_position(gps_position),
@@ -140,7 +140,7 @@ int GPSDriverFemto::handleMessage(int len)
 		ret = 1;
 
 	} else if (_satellite_info && messageid == FEMTO_MSG_ID_UAVSTATUS) {	/**< set satellite info */
-		const femto_uav_status_t *uav_status = (const femto_uav_status_t *)_femto_msg.data;
+		const femto_uav_status_t * uav_status = (const femto_uav_status_t *)_femto_msg.data;
 
 		_satellite_info->count = MIN(uav_status->sat_number, satellite_info_s::SAT_INFO_MAX_SATELLITES);
 
@@ -165,8 +165,8 @@ int GPSDriverFemto::handleMessage(int len)
 		}
 
 		if (uiCalcComma == 14) {
-			char *bufptr = (char *)(_femto_msg.data + 6);
-			char *endp = nullptr;
+			char * bufptr = (char *)(_femto_msg.data + 6);
+			char * endp = nullptr;
 			double ashtech_time = 0.0, lat = 0.0, lon = 0.0, alt = 0.0;
 			int num_of_sv = 0, fix_quality = 0;
 			double hdop = 99.9;
@@ -461,8 +461,8 @@ int GPSDriverFemto::parseChar(uint8_t temp)
 		case FemtoDecodeState::pream_nmea_got_first_cs_byte: {
 				_femto_msg.data[_femto_msg.read++] = temp;
 				uint8_t checksum = 0;
-				uint8_t *buffer = _femto_msg.data + 1;
-				uint8_t *bufend = _femto_msg.data + _femto_msg.read - 3;
+				uint8_t * buffer = _femto_msg.data + 1;
+				uint8_t * bufend = _femto_msg.data + _femto_msg.read - 3;
 
 				for (; buffer < bufend; buffer++) {
 					checksum ^= *buffer;
@@ -514,7 +514,7 @@ void GPSDriverFemto::decodeInit()
 	}
 }
 
-int GPSDriverFemto::writeAckedCommandFemto(const char *command, const char *reply, const unsigned int timeout)
+int GPSDriverFemto::writeAckedCommandFemto(const char * command, const char * reply, const unsigned int timeout)
 {
 	/**< write command*/
 	write(command, strlen(command));
@@ -535,7 +535,7 @@ int GPSDriverFemto::writeAckedCommandFemto(const char *command, const char *repl
 	return -1;
 }
 
-int GPSDriverFemto::configure(unsigned &baudrate, const GPSConfig &config)
+int GPSDriverFemto::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	FEMTO_DEBUG("Femto: configure gps driver")
 
@@ -684,7 +684,7 @@ void GPSDriverFemto::activateCorrectionOutput()
 	} else {
 		FEMTO_DEBUG("Femto: setting base station position")
 
-		const FixedPositionSettings &settings = _base_settings.settings.fixed_position;
+		const FixedPositionSettings & settings = _base_settings.settings.fixed_position;
 		int len = snprintf(buffer, sizeof(buffer), "FIX POSITION %.8lf %.8lf %.5f\r\n",
 				   settings.latitude, settings.longitude, (double)settings.altitude);
 

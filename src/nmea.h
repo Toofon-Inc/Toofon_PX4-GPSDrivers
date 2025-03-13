@@ -58,15 +58,15 @@ public:
 	/**
 	 * @param heading_offset heading offset in radians [-pi, pi]. It is substracted from the measurement.
 	 */
-	GPSDriverNMEA(GPSCallbackPtr callback, void *callback_user,
-		      sensor_gps_s *gps_position,
-		      satellite_info_s *satellite_info,
+	GPSDriverNMEA(GPSCallbackPtr callback, void * callback_user,
+		      sensor_gps_s * gps_position,
+		      satellite_info_s * satellite_info,
 		      float heading_offset = 0.f);
 
 	virtual ~GPSDriverNMEA();
 
 	int receive(unsigned timeout) override;
-	int configure(unsigned &baudrate, const GPSConfig &config) override;
+	int configure(unsigned & baudrate, const GPSConfig & config) override;
 
 private:
 	void handleHeading(float heading_deg, float heading_stddev_deg);
@@ -91,8 +91,8 @@ private:
 	double read_float();
 	char read_char();
 
-	sensor_gps_s *_gps_position {nullptr};
-	satellite_info_s *_satellite_info {nullptr};
+	sensor_gps_s * _gps_position {nullptr};
+	satellite_info_s * _satellite_info {nullptr};
 	double _last_POS_timeUTC{0};
 	double _last_VEL_timeUTC{0};
 	uint64_t _last_timestamp_time{0};
@@ -126,7 +126,7 @@ private:
 
 	OutputMode _output_mode{OutputMode::GPS};
 
-	RTCMParsing *_rtcm_parsing{nullptr};
+	RTCMParsing * _rtcm_parsing{nullptr};
 
 	float _heading_offset;
 };

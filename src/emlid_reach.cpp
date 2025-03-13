@@ -70,15 +70,15 @@
 #define AUTO_DETECT_MAX_READ_SENTENCE 5  // if more detect succeed
 
 
-GPSDriverEmlidReach::GPSDriverEmlidReach(GPSCallbackPtr callback, void *callback_user,
-		sensor_gps_s *gps_position, satellite_info_s *satellite_info) :
+GPSDriverEmlidReach::GPSDriverEmlidReach(GPSCallbackPtr callback, void * callback_user,
+		sensor_gps_s * gps_position, satellite_info_s * satellite_info) :
 	GPSHelper(callback, callback_user),
 	_gps_position(gps_position), _satellite_info(satellite_info)
 {}
 
 
 int
-GPSDriverEmlidReach::configure(unsigned &baudrate, const GPSConfig &config)
+GPSDriverEmlidReach::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	// TODO RTK
 	if (config.output_mode != OutputMode::GPS) {
@@ -178,7 +178,7 @@ int
 GPSDriverEmlidReach::erbParseChar(uint8_t b)
 {
 	int ret = 0;
-	uint8_t *buff_ptr = (uint8_t *)&_erb_buff;
+	uint8_t * buff_ptr = (uint8_t *)&_erb_buff;
 
 	switch (_erb_decode_state) {
 	case ERB_State::init:

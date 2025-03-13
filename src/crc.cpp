@@ -58,7 +58,7 @@ static uint32_t crc32Value(uint32_t crc)
 }
 
 uint32_t
-calculateCRC32(uint32_t length, uint8_t *buffer, uint32_t crc)
+calculateCRC32(uint32_t length, uint8_t * buffer, uint32_t crc)
 {
 	while (length-- != 0) {
 		crc = ((crc >> 8) & 0x00FFFFFFL) ^ (crc32Value(((uint32_t) crc ^ *buffer++) & 0xff));

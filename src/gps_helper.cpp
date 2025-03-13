@@ -46,7 +46,7 @@
  * @author Julian Oes <julian@oes.ch>
  */
 
-GPSHelper::GPSHelper(GPSCallbackPtr callback, void *callback_user) :
+GPSHelper::GPSHelper(GPSCallbackPtr callback, void * callback_user) :
 	_callback(callback),
 	_callback_user(callback_user)
 {
@@ -67,8 +67,8 @@ GPSHelper::storeUpdateRates()
 	_rate_lat_lon = _rate_count_lat_lon / (((float)(gps_absolute_time() - _interval_rate_start)) / 1000000.0f);
 }
 
-void GPSHelper::ECEF2lla(double ecef_x, double ecef_y, double ecef_z, double &latitude, double &longitude,
-			 float &altitude)
+void GPSHelper::ECEF2lla(double ecef_x, double ecef_y, double ecef_z, double & latitude, double & longitude,
+			 float & altitude)
 {
 	// WGS84 ellipsoid constants
 	constexpr double a = 6378137.; // radius

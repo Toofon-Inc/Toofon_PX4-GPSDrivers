@@ -46,8 +46,8 @@
 //#define ASH_DEBUG(...)		{GPS_WARN(__VA_ARGS__);}
 #define ASH_DEBUG(...)		{/*GPS_WARN(__VA_ARGS__);*/}
 
-GPSDriverAshtech::GPSDriverAshtech(GPSCallbackPtr callback, void *callback_user,
-				   sensor_gps_s *gps_position, satellite_info_s *satellite_info,
+GPSDriverAshtech::GPSDriverAshtech(GPSCallbackPtr callback, void * callback_user,
+				   sensor_gps_s * gps_position, satellite_info_s * satellite_info,
 				   float heading_offset) :
 	GPSBaseStationSupport(callback, callback_user),
 	_heading_offset(heading_offset),
@@ -69,7 +69,7 @@ GPSDriverAshtech::~GPSDriverAshtech()
 
 int GPSDriverAshtech::handleMessage(int len)
 {
-	char *endp;
+	char * endp;
 
 	if (len < 7) {
 		return 0;
@@ -81,7 +81,7 @@ int GPSDriverAshtech::handleMessage(int len)
 		if (_rx_buffer[i] == ',') { uiCalcComma++; }
 	}
 
-	char *bufptr = (char *)(_rx_buffer + 6);
+	char * bufptr = (char *)(_rx_buffer + 6);
 	int ret = 0;
 
 	if ((memcmp(_rx_buffer + 3, "ZDA,", 3) == 0) && (uiCalcComma == 6)) {
@@ -659,7 +659,7 @@ int GPSDriverAshtech::handleMessage(int len)
 		// when finished we get one of the follwing messages:
 		// - successful: $PASHR,RECEIPT,POS,AVG,100,FINISHED,114642.81,28.12.2011,5542.5178481,N,03739.2954994,E,176.334,OK,CONTINUOUS,100.20*09
 		// - unsuccessful: $PASHR,RECEIPT,POS,AVG,100,FINISHED,124628.01,28.12.2011,ERR
-		char *finished_find = strstr((char *)_rx_buffer, "FINISHED,");
+		char * finished_find = strstr((char *)_rx_buffer, "FINISHED,");
 
 		if (finished_find) {
 			const bool error = strstr((const char *)_rx_buffer, "ERR");
@@ -726,7 +726,7 @@ int GPSDriverAshtech::handleMessage(int len)
 void GPSDriverAshtech::activateRTCMOutput(bool reduce_update_rate)
 {
 	char buffer[40];
-	const char *rtcm_options[] = {
+	const char * rtcm_options[] = {
 		"$PASHS,NME,POS,%c,ON,0.2\r\n",  // reduce position updates to 5 Hz
 
 		"$PASHS,RT3,1074,%c,ON,1\r\n", // GPS observations
@@ -875,8 +875,8 @@ int GPSDriverAshtech::parseChar(uint8_t b)
 	case NMEADecodeState::got_first_cs_byte: {
 			_rx_buffer[_rx_buffer_bytes++] = b;
 			uint8_t checksum = 0;
-			uint8_t *buffer = _rx_buffer + 1;
-			uint8_t *bufend = _rx_buffer + _rx_buffer_bytes - 3;
+			uint8_t * buffer = _rx_buffer + 1;
+			uint8_t * bufend = _rx_buffer + _rx_buffer_bytes - 3;
 
 			for (; buffer < bufend; buffer++) { checksum ^= *buffer; }
 
@@ -918,7 +918,7 @@ void GPSDriverAshtech::decodeInit()
 	}
 }
 
-int GPSDriverAshtech::writeAckedCommand(const void *buf, int buf_length, unsigned timeout)
+int GPSDriverAshtech::writeAckedCommand(const void * buf, int buf_length, unsigned timeout)
 {
 	if (write(buf, buf_length) != buf_length) {
 		return -1;
@@ -943,7 +943,7 @@ int GPSDriverAshtech::waitForReply(NMEACommand command, const unsigned timeout)
 	return _command_state == NMEACommandState::received ? 0 : -1;
 }
 
-int GPSDriverAshtech::configure(unsigned &baudrate, const GPSConfig &config)
+int GPSDriverAshtech::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	_output_mode = config.output_mode;
 	_correction_output_activated = false;
@@ -1089,7 +1089,7 @@ int GPSDriverAshtech::configure(unsigned &baudrate, const GPSConfig &config)
 	}
 
 	char buffer[40];
-	const char *config_options[] = {
+	const char * config_options[] = {
 		"$PASHS,NME,ALL,%c,OFF\r\n",    // disable all NMEA and NMEA-Like Messages
 		"$PASHS,ATM,ALL,%c,OFF\r\n",    // disable all ATM (ATOM) Messages
 		"$PASHS,OUT,%c,ON\r\n",         // enable periodic output
@@ -1163,7 +1163,7 @@ void GPSDriverAshtech::activateCorrectionOutput()
 		}
 
 
-		const char *config_options[] = {
+		const char * config_options[] = {
 			"$PASHS,ANP,OWN,TRM55971.00\r\n",    // set antenna name (arbitrary)
 			"$PASHS,STI,0001\r\n"         // enter a base ID
 		};
@@ -1182,7 +1182,7 @@ void GPSDriverAshtech::activateCorrectionOutput()
 	} else {
 		ASH_DEBUG("setting base station position");
 
-		const FixedPositionSettings &settings = _base_settings.settings.fixed_position;
+		const FixedPositionSettings & settings = _base_settings.settings.fixed_position;
 		char ns, ew;
 		double latitude = settings.latitude;
 

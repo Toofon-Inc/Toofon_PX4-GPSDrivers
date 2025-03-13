@@ -989,8 +989,8 @@ public:
 		RoverWithStaticBaseUart2,  ///< expect RTCM input on UART2 from a static base.
 	};
 
-	GPSDriverUBX(Interface gpsInterface, GPSCallbackPtr callback, void *callback_user,
-		     sensor_gps_s *gps_position, satellite_info_s *satellite_info,
+	GPSDriverUBX(Interface gpsInterface, GPSCallbackPtr callback, void * callback_user,
+		     sensor_gps_s * gps_position, satellite_info_s * satellite_info,
 		     uint8_t dynamic_model = 7,
 		     float heading_offset = 0.f,
 		     int32_t uart2_baudrate = 57600,
@@ -998,7 +998,7 @@ public:
 
 	virtual ~GPSDriverUBX();
 
-	int configure(unsigned &baudrate, const GPSConfig &config) override;
+	int configure(unsigned & baudrate, const GPSConfig & config) override;
 	int receive(unsigned timeout) override;
 	int reset(GPSRestartType restart_type) override;
 
@@ -1016,7 +1016,7 @@ public:
 		u_blox9_F9P_L1L5 = 12, ///< ZED-F9P-15B
 	};
 
-	const Board &board() const { return _board; }
+	const Board & board() const { return _board; }
 
 private:
 	int activateRTCMOutput(bool reduce_update_rate);
@@ -1029,7 +1029,7 @@ private:
 	/**
 	 * Calculate & add checksum for given buffer
 	 */
-	void calcChecksum(const uint8_t *buffer, const uint16_t length, ubx_checksum_t *checksum);
+	void calcChecksum(const uint8_t * buffer, const uint16_t length, ubx_checksum_t * checksum);
 
 	/**
 	 * Configure message rate.
@@ -1051,13 +1051,13 @@ private:
 	 * @param uart2_baudrate Baudrate of F9P's UART2 port
 	 * @return 0 on success, <0 on error
 	 */
-	int configureDevice(const GPSConfig &config, const int32_t uart2_baudrate);
+	int configureDevice(const GPSConfig & config, const int32_t uart2_baudrate);
 	/**
 	 * Send configuration values and desired message rates (for protocol version < 27)
 	 * @param gnssSystems Set of GNSS systems to use
 	 * @return 0 on success, <0 on error
 	 */
-	int configureDevicePreV27(const GNSSSystemsMask &gnssSystems);
+	int configureDevicePreV27(const GNSSSystemsMask & gnssSystems);
 
 	/**
 	 * Add a configuration value to _buf and increase the message size msg_size as needed
@@ -1067,7 +1067,7 @@ private:
 	 * @return true on success, false if buffer too small
 	 */
 	template<typename T>
-	bool cfgValset(uint32_t key_id, T value, int &msg_size);
+	bool cfgValset(uint32_t key_id, T value, int & msg_size);
 
 	/**
 	 * Add a configuration value that is port-specific (MSGOUT messages).
@@ -1080,7 +1080,7 @@ private:
 	 * @param msg_size CFG-VALSET message size: this is an input & output param
 	 * @return true on success, false if buffer too small
 	 */
-	bool cfgValsetPort(uint32_t key_id, uint8_t value, int &msg_size);
+	bool cfgValsetPort(uint32_t key_id, uint8_t value, int & msg_size);
 
 	/**
 	 * Reset the parse state machine for a fresh start
@@ -1090,7 +1090,7 @@ private:
 	/**
 	 * Calculate FNV1 hash
 	 */
-	uint32_t fnv1_32_str(uint8_t *str, uint32_t hval);
+	uint32_t fnv1_32_str(uint8_t * str, uint32_t hval);
 
 	/**
 	 * Init _buf as CFG-VALSET
@@ -1137,7 +1137,7 @@ private:
 	 * Send a message
 	 * @return true on success, false on write error (errno set)
 	 */
-	bool sendMessage(const uint16_t msg, const uint8_t *payload, const uint16_t length);
+	bool sendMessage(const uint16_t msg, const uint8_t * payload, const uint16_t length);
 
 	/**
 	 * Wait for message acknowledge
@@ -1147,8 +1147,8 @@ private:
 	const Interface _interface{};
 
 	gps_abstime             _disable_cmd_last{0};
-	sensor_gps_s           *_gps_position {nullptr};
-	satellite_info_s       *_satellite_info {nullptr};
+	sensor_gps_s      *     _gps_position {nullptr};
+	satellite_info_s    *   _satellite_info {nullptr};
 	ubx_ack_state_t         _ack_state{UBX_ACK_IDLE};
 	ubx_buf_t               _buf{};
 	ubx_decode_state_t      _decode_state{};
@@ -1177,7 +1177,7 @@ private:
 
 	OutputMode _output_mode{OutputMode::GPS};
 
-	RTCMParsing *_rtcm_parsing{nullptr};
+	RTCMParsing * _rtcm_parsing{nullptr};
 
 	const UBXMode _mode;
 	const float _heading_offset;

@@ -67,8 +67,8 @@
 #define UBX_WARN(...)         {GPS_WARN(__VA_ARGS__);}
 #define UBX_DEBUG(...)        {/*GPS_WARN(__VA_ARGS__);*/}
 
-GPSDriverUBX::GPSDriverUBX(Interface gpsInterface, GPSCallbackPtr callback, void *callback_user,
-			   sensor_gps_s *gps_position, satellite_info_s *satellite_info, uint8_t dynamic_model,
+GPSDriverUBX::GPSDriverUBX(Interface gpsInterface, GPSCallbackPtr callback, void * callback_user,
+			   sensor_gps_s * gps_position, satellite_info_s * satellite_info, uint8_t dynamic_model,
 			   float heading_offset, int32_t uart2_baudrate, UBXMode mode) :
 	GPSBaseStationSupport(callback, callback_user),
 	_interface(gpsInterface),
@@ -88,7 +88,7 @@ GPSDriverUBX::~GPSDriverUBX()
 }
 
 int
-GPSDriverUBX::configure(unsigned &baudrate, const GPSConfig &config)
+GPSDriverUBX::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	_configured = false;
 	_output_mode = config.output_mode;
@@ -345,7 +345,7 @@ GPSDriverUBX::configure(unsigned &baudrate, const GPSConfig &config)
 }
 
 
-int GPSDriverUBX::configureDevicePreV27(const GNSSSystemsMask &gnssSystems)
+int GPSDriverUBX::configureDevicePreV27(const GNSSSystemsMask & gnssSystems)
 {
 	/* Send a CFG-RATE message to define update rate */
 	memset(&_buf.payload_tx_cfg_rate, 0, sizeof(_buf.payload_tx_cfg_rate));
@@ -504,7 +504,7 @@ int GPSDriverUBX::configureDevicePreV27(const GNSSSystemsMask &gnssSystems)
 	return 0;
 }
 
-int GPSDriverUBX::configureDevice(const GPSConfig &config, const int32_t uart2_baudrate)
+int GPSDriverUBX::configureDevice(const GPSConfig & config, const int32_t uart2_baudrate)
 {
 	// There is no RTCM or USB interface on M10
 	if (_board != Board::u_blox10) {
@@ -915,7 +915,7 @@ int GPSDriverUBX::initCfgValset()
 }
 
 template<typename T>
-bool GPSDriverUBX::cfgValset(uint32_t key_id, T value, int &msg_size)
+bool GPSDriverUBX::cfgValset(uint32_t key_id, T value, int & msg_size)
 {
 	if (msg_size + sizeof(key_id) + sizeof(value) > sizeof(_buf)) {
 		// If this happens use several CFG-VALSET messages instead of one
@@ -923,7 +923,7 @@ bool GPSDriverUBX::cfgValset(uint32_t key_id, T value, int &msg_size)
 		return false;
 	}
 
-	uint8_t *buffer = (uint8_t *)&_buf.payload_tx_cfg_valset;
+	uint8_t * buffer = (uint8_t *)&_buf.payload_tx_cfg_valset;
 	memcpy(buffer + msg_size, &key_id, sizeof(key_id));
 	msg_size += sizeof(key_id);
 	memcpy(buffer + msg_size, &value, sizeof(value));
@@ -931,7 +931,7 @@ bool GPSDriverUBX::cfgValset(uint32_t key_id, T value, int &msg_size)
 	return true;
 }
 
-bool GPSDriverUBX::cfgValsetPort(uint32_t key_id, uint8_t value, int &msg_size)
+bool GPSDriverUBX::cfgValsetPort(uint32_t key_id, uint8_t value, int & msg_size)
 {
 	if (_interface == Interface::SPI) {
 		if (!cfgValset<uint8_t>(key_id + 4, value, msg_size)) {
@@ -1003,7 +1003,7 @@ int GPSDriverUBX::restartSurveyInPreV27()
 	} else {
 		UBX_DEBUG("Setting fixed base position");
 
-		const FixedPositionSettings &settings = _base_settings.settings.fixed_position;
+		const FixedPositionSettings & settings = _base_settings.settings.fixed_position;
 
 		memset(&_buf.payload_tx_cfg_tmode3, 0, sizeof(_buf.payload_tx_cfg_tmode3));
 		_buf.payload_tx_cfg_tmode3.flags = 2 /* fixed mode */ | (1 << 8) /* lat/lon mode */;
@@ -1075,7 +1075,7 @@ int GPSDriverUBX::restartSurveyIn()
 	} else {
 		UBX_DEBUG("Setting fixed base position");
 
-		const FixedPositionSettings &settings = _base_settings.settings.fixed_position;
+		const FixedPositionSettings & settings = _base_settings.settings.fixed_position;
 		cfg_valset_msg_size = initCfgValset();
 		cfgValset<uint8_t>(UBX_CFG_KEY_TMODE_MODE, 2 /* Fixed Mode */, cfg_valset_msg_size);
 		cfgValset<uint8_t>(UBX_CFG_KEY_TMODE_POS_TYPE, 1 /* Lat/Lon/Height */, cfg_valset_msg_size);
@@ -1639,7 +1639,7 @@ int	// -1 = error, 0 = ok, 1 = payload completed
 GPSDriverUBX::payloadRxAdd(const uint8_t b)
 {
 	int ret = 0;
-	uint8_t *p_buf = (uint8_t *)&_buf;
+	uint8_t * p_buf = (uint8_t *)&_buf;
 
 	p_buf[_rx_payload_index] = b;
 
@@ -1654,7 +1654,7 @@ int	// -1 = error, 0 = ok, 1 = payload completed
 GPSDriverUBX::payloadRxAddNavSat(const uint8_t b)
 {
 	int ret = 0;
-	uint8_t *p_buf = (uint8_t *)&_buf;
+	uint8_t * p_buf = (uint8_t *)&_buf;
 
 	if (_rx_payload_index < sizeof(ubx_payload_rx_nav_sat_part1_t)) {
 		// Fill Part 1 buffer
@@ -1774,7 +1774,7 @@ int	// -1 = error, 0 = ok, 1 = payload completed
 GPSDriverUBX::payloadRxAddNavSvinfo(const uint8_t b)
 {
 	int ret = 0;
-	uint8_t *p_buf = (uint8_t *)&_buf;
+	uint8_t * p_buf = (uint8_t *)&_buf;
 
 	if (_rx_payload_index < sizeof(ubx_payload_rx_nav_svinfo_part1_t)) {
 		// Fill Part 1 buffer
@@ -1834,7 +1834,7 @@ int	// -1 = error, 0 = ok, 1 = payload completed
 GPSDriverUBX::payloadRxAddMonVer(const uint8_t b)
 {
 	int ret = 0;
-	uint8_t *p_buf = (uint8_t *)&_buf;
+	uint8_t * p_buf = (uint8_t *)&_buf;
 
 	if (_rx_payload_index < sizeof(ubx_payload_rx_mon_ver_part1_t)) {
 		// Fill Part 1 buffer
@@ -1891,7 +1891,7 @@ GPSDriverUBX::payloadRxAddMonVer(const uint8_t b)
 			UBX_DEBUG("VER ext \" %30s\"", _buf.payload_rx_mon_ver_part2.extension);
 
 			// "FWVER=" Firmware of product category and version
-			const char *fwver_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "FWVER=");
+			const char * fwver_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "FWVER=");
 
 			if (fwver_str != nullptr) {
 				GPS_INFO("u-blox firmware version: %s", fwver_str + strlen("FWVER="));
@@ -1904,14 +1904,14 @@ GPSDriverUBX::payloadRxAddMonVer(const uint8_t b)
 			}
 
 			// "PROTVER=" Supported protocol version.
-			const char *protver_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "PROTVER=");
+			const char * protver_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "PROTVER=");
 
 			if (protver_str != nullptr) {
 				GPS_INFO("u-blox protocol version: %s", protver_str + strlen("PROTVER="));
 			}
 
 			// "MOD=" Module identification. Set in production.
-			const char *mod_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "MOD=");
+			const char * mod_str = strstr((const char *)_buf.payload_rx_mon_ver_part2.extension, "MOD=");
 
 			if (mod_str != nullptr) {
 				// in case of u-blox9 family, check if it's an F9P
@@ -2055,7 +2055,7 @@ GPSDriverUBX::payloadRxDone()
 
 	case UBX_MSG_INF_DEBUG:
 	case UBX_MSG_INF_NOTICE: {
-			uint8_t *p_buf = (uint8_t *)&_buf;
+			uint8_t * p_buf = (uint8_t *)&_buf;
 			p_buf[_rx_payload_length] = 0;
 			UBX_DEBUG("ubx msg: %s", p_buf);
 		}
@@ -2063,7 +2063,7 @@ GPSDriverUBX::payloadRxDone()
 
 	case UBX_MSG_INF_ERROR:
 	case UBX_MSG_INF_WARNING: {
-			uint8_t *p_buf = (uint8_t *)&_buf;
+			uint8_t * p_buf = (uint8_t *)&_buf;
 			p_buf[_rx_payload_length] = 0;
 			UBX_WARN("ubx msg: %s", p_buf);
 		}
@@ -2200,7 +2200,7 @@ GPSDriverUBX::payloadRxDone()
 	case UBX_MSG_NAV_SVIN:
 		UBX_TRACE_RXMSG("Rx NAV-SVIN");
 		{
-			ubx_payload_rx_nav_svin_t &svin = _buf.payload_rx_nav_svin;
+			ubx_payload_rx_nav_svin_t & svin = _buf.payload_rx_nav_svin;
 
 			UBX_DEBUG("Survey-in status: %lus cur accuracy: %lumm nr obs: %lu valid: %i active: %i",
 				  svin.dur, svin.meanAcc / 10, svin.obs, static_cast<int>(svin.valid), static_cast<int>(svin.active));
@@ -2508,7 +2508,7 @@ GPSDriverUBX::addByteToChecksum(const uint8_t b)
 }
 
 void
-GPSDriverUBX::calcChecksum(const uint8_t *buffer, const uint16_t length, ubx_checksum_t *checksum)
+GPSDriverUBX::calcChecksum(const uint8_t * buffer, const uint16_t length, ubx_checksum_t * checksum)
 {
 	for (uint16_t i = 0; i < length; i++) {
 		checksum->ck_a = checksum->ck_a + buffer[i];
@@ -2545,7 +2545,7 @@ GPSDriverUBX::configureMessageRateAndAck(uint16_t msg, uint8_t rate, bool report
 }
 
 bool
-GPSDriverUBX::sendMessage(const uint16_t msg, const uint8_t *payload, const uint16_t length)
+GPSDriverUBX::sendMessage(const uint16_t msg, const uint8_t * payload, const uint16_t length)
 {
 	ubx_header_t   header = {UBX_SYNC1, UBX_SYNC2, 0, 0};
 	ubx_checksum_t checksum = {0, 0};
@@ -2578,9 +2578,9 @@ GPSDriverUBX::sendMessage(const uint16_t msg, const uint8_t *payload, const uint
 }
 
 uint32_t
-GPSDriverUBX::fnv1_32_str(uint8_t *str, uint32_t hval)
+GPSDriverUBX::fnv1_32_str(uint8_t * str, uint32_t hval)
 {
-	uint8_t *s = str;
+	uint8_t * s = str;
 
 	/*
 	 * FNV-1 hash each octet in the buffer

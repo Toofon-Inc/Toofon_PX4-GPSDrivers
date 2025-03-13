@@ -63,8 +63,8 @@
 #define SBF_WARN(...)        {GPS_WARN(__VA_ARGS__);}
 #define SBF_DEBUG(...)       {/*GPS_WARN(__VA_ARGS__);*/}
 
-GPSDriverSBF::GPSDriverSBF(GPSCallbackPtr callback, void *callback_user, struct sensor_gps_s *gps_position,
-			   satellite_info_s *satellite_info, float heading_offset, float pitch_offset)
+GPSDriverSBF::GPSDriverSBF(GPSCallbackPtr callback, void * callback_user, struct sensor_gps_s * gps_position,
+			   satellite_info_s * satellite_info, float heading_offset, float pitch_offset)
 	: GPSBaseStationSupport(callback, callback_user), _gps_position(gps_position), _satellite_info(satellite_info),
 	  _heading_offset(heading_offset), _pitch_offset(pitch_offset)
 {
@@ -76,7 +76,7 @@ GPSDriverSBF::~GPSDriverSBF()
 	delete _rtcm_parsing;
 }
 
-int GPSDriverSBF::configure(unsigned &baudrate, const GPSConfig &config)
+int GPSDriverSBF::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	char buf[GPS_READ_BUFFER_SIZE];
 	char msg[MSG_SIZE];
@@ -121,7 +121,7 @@ int GPSDriverSBF::configure(unsigned &baudrate, const GPSConfig &config)
 		offset += ret;
 		buf[offset++] = '\0';
 
-		char *p = strstr(buf, ">");
+		char * p = strstr(buf, ">");
 
 		if (p) { //check if the length of the com port == 4 and contains a > sign
 			for (int i = 0; i < 4; i++) {
@@ -239,7 +239,7 @@ int GPSDriverSBF::configure(unsigned &baudrate, const GPSConfig &config)
 	return 0;
 }
 
-bool GPSDriverSBF::sendMessage(const char *msg)
+bool GPSDriverSBF::sendMessage(const char * msg)
 {
 	// Send message
 	SBF_DEBUG("Send MSG: %s", msg);
@@ -248,7 +248,7 @@ bool GPSDriverSBF::sendMessage(const char *msg)
 	return (write(msg, length) == length);
 }
 
-bool GPSDriverSBF::sendMessageAndWaitForAck(const char *msg, const int timeout)
+bool GPSDriverSBF::sendMessageAndWaitForAck(const char * msg, const int timeout)
 {
 	SBF_DEBUG("Send MSG: %s", msg);
 
@@ -432,7 +432,7 @@ int GPSDriverSBF::parseChar(const uint8_t b)
 int GPSDriverSBF::payloadRxAdd(const uint8_t b)
 {
 	int ret = 0;
-	uint8_t *p_buf = reinterpret_cast<uint8_t *>(&_buf);
+	uint8_t * p_buf = reinterpret_cast<uint8_t *>(&_buf);
 
 	p_buf[_rx_payload_index++] = b;
 
@@ -446,7 +446,7 @@ int GPSDriverSBF::payloadRxAdd(const uint8_t b)
 /**
  * Calculate buffer CRC16
  */
-uint16_t crc16(const uint8_t *data_p, uint32_t length)
+uint16_t crc16(const uint8_t * data_p, uint32_t length)
 {
 	uint8_t x;
 	uint16_t crc = 0;

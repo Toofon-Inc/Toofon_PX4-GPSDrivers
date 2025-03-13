@@ -58,12 +58,12 @@ public:
 	 */
 	bool addByte(uint8_t b);
 
-	uint8_t *message() const { return _buffer; }
+	uint8_t * message() const { return _buffer; }
 	uint16_t messageLength() const { return _pos; }
 	uint16_t messageId() const { return (_buffer[3] << 4) | (_buffer[4] >> 4); }
 
 private:
-	uint8_t			*_buffer{nullptr};
+	uint8_t		*	_buffer{nullptr};
 	uint16_t		_buffer_len{};
 	uint16_t		_pos{};						///< next position in buffer
 	uint16_t		_message_length{};					///< message length without header & CRC (both 3 bytes)

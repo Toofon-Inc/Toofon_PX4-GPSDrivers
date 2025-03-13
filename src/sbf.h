@@ -357,9 +357,9 @@ public:
 	 * @param pitch_offset pitch_offset in deg [-90, 90]. This will be send as a cmd to the receiver.
 	 */
 	GPSDriverSBF(GPSCallbackPtr callback,
-		     void *callback_user,
-		     struct sensor_gps_s *gps_position,
-		     satellite_info_s *satellite_info = nullptr,
+		     void * callback_user,
+		     struct sensor_gps_s * gps_position,
+		     satellite_info_s * satellite_info = nullptr,
 		     float heading_offset = 0.f,
 		     float pitch_offset = 0.f);
 
@@ -367,7 +367,7 @@ public:
 
 	int receive(unsigned timeout) override;
 
-	int configure(unsigned &baudrate, const GPSConfig &config) override;
+	int configure(unsigned & baudrate, const GPSConfig & config) override;
 
 	int reset(GPSRestartType restart_type) override;
 
@@ -397,22 +397,22 @@ private:
 	 * @brief Send a message
 	 * @return true on success, false on write error (errno set)
 	 */
-	bool sendMessage(const char *msg);
+	bool sendMessage(const char * msg);
 
 	/**
 	 * @brief Send a message and waits for acknowledge
 	 * @return true on success, false on write error (errno set) or ack wait timeout
 	 */
-	bool sendMessageAndWaitForAck(const char *msg, const int timeout);
+	bool sendMessageAndWaitForAck(const char * msg, const int timeout);
 
 	/**
 	 * @brief Configures the SBF Output blocks
 	 * @return true on success, false on write error (errno set) or ack wait timeout
 	 */
-	bool configSBFOutput(const char *com_port);
+	bool configSBFOutput(const char * com_port);
 
-	sensor_gps_s *_gps_position{nullptr};
-	satellite_info_s *_satellite_info{nullptr};
+	sensor_gps_s * _gps_position{nullptr};
+	satellite_info_s * _satellite_info{nullptr};
 	uint8_t _dynamic_model{7};
 	uint64_t _last_timestamp_time{0};
 	bool _configured{false};
@@ -421,11 +421,11 @@ private:
 	uint16_t _rx_payload_index{0};
 	sbf_buf_t _buf;
 	OutputMode _output_mode{OutputMode::GPS};
-	RTCMParsing *_rtcm_parsing{nullptr};
+	RTCMParsing * _rtcm_parsing{nullptr};
 
 	const float _heading_offset;
 	const float _pitch_offset;
 };
 
-uint16_t crc16(const uint8_t *buf, uint32_t len);
+uint16_t crc16(const uint8_t * buf, uint32_t len);
 

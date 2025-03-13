@@ -68,7 +68,7 @@ bool RTCMParsing::addByte(uint8_t b)
 
 		if (_message_length + 6 > _buffer_len) {
 			uint16_t new_buffer_len = _message_length + 6;
-			uint8_t *new_buffer = new uint8_t[new_buffer_len];
+			uint8_t * new_buffer = new uint8_t[new_buffer_len];
 
 			if (!new_buffer) {
 				delete[](_buffer);

@@ -52,12 +52,12 @@ public:
 	/**
 	 * @param heading_offset heading offset in radians [-pi, pi]. It is substracted from the measurement.
 	 */
-	GPSDriverAshtech(GPSCallbackPtr callback, void *callback_user, sensor_gps_s *gps_position,
-			 satellite_info_s *satellite_info, float heading_offset = 0.f);
+	GPSDriverAshtech(GPSCallbackPtr callback, void * callback_user, sensor_gps_s * gps_position,
+			 satellite_info_s * satellite_info, float heading_offset = 0.f);
 
 	virtual ~GPSDriverAshtech();
 
-	int configure(unsigned &baudrate, const GPSConfig &config) override;
+	int configure(unsigned & baudrate, const GPSConfig & config) override;
 
 	int receive(unsigned timeout) override;
 
@@ -114,7 +114,7 @@ private:
 	 * Write a command and wait for a (N)Ack
 	 * @return 0 on success, <0 otherwise
 	 */
-	int writeAckedCommand(const void *buf, int buf_length, unsigned timeout);
+	int writeAckedCommand(const void * buf, int buf_length, unsigned timeout);
 
 	int waitForReply(NMEACommand command, const unsigned timeout);
 
@@ -132,9 +132,9 @@ private:
 
 	gps_abstime _survey_in_start{0};
 
-	sensor_gps_s *_gps_position {nullptr};
+	sensor_gps_s * _gps_position {nullptr};
 
-	satellite_info_s *_satellite_info {nullptr};
+	satellite_info_s * _satellite_info {nullptr};
 
 	AshtechBoard _board{AshtechBoard::other}; /**< board we are connected to */
 
@@ -146,6 +146,6 @@ private:
 
 	OutputMode _output_mode{OutputMode::GPS};
 
-	RTCMParsing *_rtcm_parsing{nullptr};
+	RTCMParsing * _rtcm_parsing{nullptr};
 };
 

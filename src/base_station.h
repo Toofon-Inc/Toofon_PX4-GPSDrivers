@@ -49,7 +49,7 @@
 class GPSBaseStationSupport : public GPSHelper
 {
 public:
-	GPSBaseStationSupport(GPSCallbackPtr callback, void *callback_user)
+	GPSBaseStationSupport(GPSCallbackPtr callback, void * callback_user)
 		: GPSHelper(callback, callback_user) {}
 
 	virtual ~GPSBaseStationSupport() = default;

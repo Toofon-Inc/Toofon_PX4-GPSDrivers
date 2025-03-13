@@ -47,7 +47,7 @@
 #include <math.h>
 
 
-GPSDriverMTK::GPSDriverMTK(GPSCallbackPtr callback, void *callback_user, sensor_gps_s *gps_position) :
+GPSDriverMTK::GPSDriverMTK(GPSCallbackPtr callback, void * callback_user, sensor_gps_s * gps_position) :
 	GPSHelper(callback, callback_user),
 	_gps_position(gps_position)
 {
@@ -55,7 +55,7 @@ GPSDriverMTK::GPSDriverMTK(GPSCallbackPtr callback, void *callback_user, sensor_
 }
 
 int
-GPSDriverMTK::configure(unsigned &baudrate, const GPSConfig &config)
+GPSDriverMTK::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	if (config.output_mode != OutputMode::GPS) {
 		GPS_WARN("MTK: Unsupported Output Mode %i", (int)config.output_mode);
@@ -161,7 +161,7 @@ GPSDriverMTK::decodeInit()
 	_decode_state = MTK_DECODE_UNINIT;
 }
 int
-GPSDriverMTK::parseChar(uint8_t b, gps_mtk_packet_t &packet)
+GPSDriverMTK::parseChar(uint8_t b, gps_mtk_packet_t & packet)
 {
 	int ret = 0;
 
@@ -214,7 +214,7 @@ GPSDriverMTK::parseChar(uint8_t b, gps_mtk_packet_t &packet)
 }
 
 void
-GPSDriverMTK::handleMessage(gps_mtk_packet_t &packet)
+GPSDriverMTK::handleMessage(gps_mtk_packet_t & packet)
 {
 	if (_mtk_revision == 16) {
 		_gps_position->latitude_deg = packet.latitude / 1e6;   // from degrees*1e6 to degrees

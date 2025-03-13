@@ -62,9 +62,9 @@
 #define NMEA_WARN(...)         {GPS_WARN(__VA_ARGS__);}
 #define NMEA_DEBUG(...)        {/*GPS_WARN(__VA_ARGS__);*/}
 
-GPSDriverNMEA::GPSDriverNMEA(GPSCallbackPtr callback, void *callback_user,
-			     sensor_gps_s *gps_position,
-			     satellite_info_s *satellite_info,
+GPSDriverNMEA::GPSDriverNMEA(GPSCallbackPtr callback, void * callback_user,
+			     sensor_gps_s * gps_position,
+			     satellite_info_s * satellite_info,
 			     float heading_offset) :
 	GPSHelper(callback, callback_user),
 	_gps_position(gps_position),
@@ -86,7 +86,7 @@ GPSDriverNMEA::~GPSDriverNMEA()
 
 int GPSDriverNMEA::handleMessage(int len)
 {
-	char *endp;
+	char * endp;
 
 	if (len < 7) {
 		return 0;
@@ -98,7 +98,7 @@ int GPSDriverNMEA::handleMessage(int len)
 		if (_rx_buffer[i] == ',') { fieldCount++; }
 	}
 
-	char *bufptr = (char *)(_rx_buffer + 6);
+	char * bufptr = (char *)(_rx_buffer + 6);
 	int ret = 0;
 
 	if ((memcmp(_rx_buffer + 3, "ZDA,", 4) == 0) && (fieldCount == 6)) {
@@ -1139,8 +1139,8 @@ int GPSDriverNMEA::parseChar(uint8_t b)
 	case NMEADecodeState::got_first_cs_byte: {
 			_rx_buffer[_rx_buffer_bytes++] = b;
 			uint8_t checksum = 0;
-			uint8_t *buffer = _rx_buffer + 1;
-			uint8_t *bufend = _rx_buffer + _rx_buffer_bytes - 3;
+			uint8_t * buffer = _rx_buffer + 1;
+			uint8_t * bufend = _rx_buffer + _rx_buffer_bytes - 3;
 
 			for (; buffer < bufend; buffer++) { checksum ^= *buffer; }
 
@@ -1182,7 +1182,7 @@ void GPSDriverNMEA::decodeInit()
 	}
 }
 
-int GPSDriverNMEA::configure(unsigned &baudrate, const GPSConfig &config)
+int GPSDriverNMEA::configure(unsigned & baudrate, const GPSConfig & config)
 {
 	_output_mode = config.output_mode;
 

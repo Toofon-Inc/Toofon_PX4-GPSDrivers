@@ -143,7 +143,7 @@ bool UnicoreParser::extractHeading()
 	// The basline starts after ;,, and then follows the heading.
 
 	// Skip to ;
-	char *ptr = strchr(_buffer, ';');
+	char * ptr = strchr(_buffer, ';');
 
 	if (ptr == nullptr) {
 		return false;
@@ -180,7 +180,7 @@ bool UnicoreParser::extractHeading()
 bool UnicoreParser::extractAgrica()
 {
 	// Skip to ;
-	char *ptr = strchr(_buffer, ';');
+	char * ptr = strchr(_buffer, ';');
 
 	if (ptr == nullptr) {
 		return false;
