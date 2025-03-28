@@ -96,7 +96,7 @@ bool RTCMParsing::addByte(uint8_t b)
 	}
 
 	if (_message_length + 6 == _pos) {
-		const uint8_t *crc_buffer = &_buffer[_message_length + 3];
+		const uint8_t * crc_buffer = &_buffer[_message_length + 3];
 		uint32_t actual_crc = (crc_buffer[0] << 16) | (crc_buffer[1] << 8) | crc_buffer[2];
 		uint32_t expected_crc = crc24(_buffer, _message_length + 3);
 
@@ -112,7 +112,7 @@ bool RTCMParsing::addByte(uint8_t b)
 	return false;
 }
 
-uint32_t RTCMParsing::crc24(const uint8_t *buffer, uint16_t len)
+uint32_t RTCMParsing::crc24(const uint8_t * buffer, uint16_t len)
 {
 	constexpr uint32_t poly = 0x1864CFB;
 	uint32_t crc = 0;

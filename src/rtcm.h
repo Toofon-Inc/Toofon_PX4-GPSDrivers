@@ -64,9 +64,9 @@ public:
 	uint16_t messageId() const { return (_buffer[3] << 4) | (_buffer[4] >> 4); }
 
 private:
-	uint32_t crc24(const uint8_t *buffer, const uint16_t len);
+	uint32_t crc24(const uint8_t * buffer, const uint16_t len);
 
-	uint8_t			*_buffer{nullptr};
+	uint8_t		*	_buffer{nullptr};
 	uint16_t		_buffer_len{};
 	uint16_t		_pos{};						///< next position in buffer
 	uint16_t		_message_length{};				///< message length without header & CRC (both 3 bytes)
